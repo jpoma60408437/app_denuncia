@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Denuncia de Violencia Familiar - Perú</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c42a3f 0%, #8b1e2f 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .btn-emergencia {
+            background: #ffc107;
+            color: #000;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-emergencia:hover {
+            transform: scale(1.05);
+            background: #ffca28;
+        }
+
+        .info-linea {
+            width: 100%;
+            margin-top: 10px;
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #e8e8e8;
+        }
+
+        .tab.active {
+            background: white;
+            color: #c42a3f;
+            border-bottom: 3px solid #c42a3f;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.4s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c42a3f;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            padding: 25px;
+            background: #f9f9f9;
+            border-top: 1px solid #ddd;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20803b 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .denuncia-card {
+            background: #f8f9fa;
+            border-left: 4px solid #c42a3f;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .denuncia-card h3 {
+            color: #c42a3f;
+            margin-bottom: 10px;
+        }
+
+        .denuncia-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .denuncia-info div {
+            font-size: 14px;
+        }
+
+        .denuncia-info strong {
+            color: #555;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: modalSlide 0.3s;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            color: #c42a3f;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .modal-content .btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .required {
+            color: #c42a3f;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                font-size: 13px;
+            }
+
+            .tab {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🛡️ SISTEMA DE DENUNCIA DE VIOLENCIA FAMILIAR</h1>
+                <p class="info-linea">📞 Para emergencias, llama al 100 (gratuito desde cualquier teléfono)</p>
+            </div>
+            <button class="btn-emergencia" onclick="mostrarEmergencia()">
+                🚨 LÍNEA 100<br>Emergencia Mujer
+            </button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="cambiarTab(0)">1. Datos del Denunciante</button>
+            <button class="tab" onclick="cambiarTab(1)">2. Datos del Agresor</button>
+            <button class="tab" onclick="cambiarTab(2)">3. Detalles de la Denuncia</button>
+            <button class="tab" onclick="cambiarTab(3)">4. Resumen</button>
+        </div>
+
+        <div class="tab-content active" id="tab0">
+            <h2 class="section-title">INFORMACIÓN DEL DENUNCIANTE</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombres <span class="required">*</span></label>
+                    <input type="text" id="nombres" placeholder="Ingrese sus nombres">
+                </div>
+                <div class="form-group">
+                    <label>Apellidos <span class="required">*</span></label>
+                    <input type="text" id="apellidos" placeholder="Ingrese sus apellidos">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>DNI <span class="required">*</span></label>
+                    <input type="text" id="dni" placeholder="12345678" maxlength="8">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Nacimiento <span class="required">*</span></label>
+                    <input type="date" id="fechaNac">
+                </div>
+                <div class="form-group">
+                    <label>Sexo <span class="required">*</span></label>
+                    <select id="sexo">
+                        <option value="">Seleccione...</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dirección <span class="required">*</span></label>
+                <input type="text" id="direccion" placeholder="Ingrese su dirección completa">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Teléfono <span class="required">*</span></label>
+                    <input type="tel" id="telefono" placeholder="987654321">
+                </div>
+                <div class="form-group">
+                    <label>Email (opcional)</label>
+                    <input type="email" id="email" placeholder="correo@ejemplo.com">
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab1">
+            <h2 class="section-title">INFORMACIÓN DEL AGRESOR</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombres del Agresor <span class="required">*</span></label>
+                    <input type="text" id="nombresAgresor" placeholder="Nombres del agresor">
+                </div>
+                <div class="form-group">
+                    <label>Apellidos del Agresor <span class="required">*</span></label>
+                    <input type="text" id="apellidosAgresor" placeholder="Apellidos del agresor">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>DNI (si se conoce)</label>
+                    <input type="text" id="dniAgresor" placeholder="12345678" maxlength="8">
+                </div>
+                <div class="form-group">
+                    <label>Relación con el Agresor <span class="required">*</span></label>
+                    <select id="relacion">
+                        <option value="">Seleccione...</option>
+                        <option value="Esposo/a">Esposo/a</option>
+                        <option value="Conviviente">Conviviente</option>
+                        <option value="Ex-Esposo/a">Ex-Esposo/a</option>
+                        <option value="Ex-Conviviente">Ex-Conviviente</option>
+                        <option value="Padre/Madre">Padre/Madre</option>
+                        <option value="Hijo/a">Hijo/a</option>
+                        <option value="Hermano/a">Hermano/a</option>
+                        <option value="Otro familiar">Otro familiar</option>
+                        <option value="Conocido">Conocido</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dirección del Agresor (si se conoce)</label>
+                <input type="text" id="direccionAgresor" placeholder="Dirección del agresor">
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab2">
+            <h2 class="section-title">DETALLES DEL INCIDENTE</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fecha del Incidente <span class="required">*</span></label>
+                    <input type="date" id="fechaIncidente">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Violencia <span class="required">*</span></label>
+                    <select id="tipoViolencia">
+                        <option value="">Seleccione...</option>
+                        <option value="Física">Física</option>
+                        <option value="Psicológica">Psicológica</option>
+                        <option value="Sexual">Sexual</option>
+                        <option value="Económica o Patrimonial">Económica o Patrimonial</option>
+                        <option value="Múltiple (varios tipos)">Múltiple (varios tipos)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Lugar del Incidente <span class="required">*</span></label>
+                <input type="text" id="lugarIncidente" placeholder="Indique el lugar donde ocurrió el incidente">
+            </div>
+
+            <div class="form-group">
+                <label>Descripción Detallada de los Hechos <span class="required">*</span></label>
+                <textarea id="descripcion" placeholder="Describa con el mayor detalle posible lo ocurrido..."></textarea>
+            </div>
+
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="testigos">
+                    <label for="testigos">Hay testigos</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pruebas">
+                    <label for="pruebas">Hay pruebas físicas (fotos, mensajes, etc.)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="atencionMedica">
+                    <label for="atencionMedica">Recibió atención médica</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="denunciaPrevia">
+                    <label for="denunciaPrevia">Ha realizado denuncias previas</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab3">
+            <h2 class="section-title">DENUNCIAS REGISTRADAS</h2>
+            <div id="listaDenuncias"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar Formulario</button>
+            <button class="btn btn-primary" onclick="guardarDenuncia()">Guardar Denuncia</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modalEmergencia">
+        <div class="modal-content">
+            <h2>🚨 INFORMACIÓN DE EMERGENCIA</h2>
+            <p><strong>📞 Línea 100</strong><br>Servicio gratuito 24/7 de orientación y ayuda en casos de violencia</p>
+            <p><strong>🚓 Policía Nacional:</strong> 105</p>
+            <p><strong>🚑 Emergencias Médicas:</strong> 117</p>
+            <p><strong>👮 Comisaría Virtual de la Mujer:</strong><br>www.comisariavirtual.pe</p>
+            <p style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                ⚠️ <strong>Si estás en peligro inmediato, llama a la Policía.</strong>
+            </p>
+            <button class="btn btn-primary" onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modalConfirmacion">
+        <div class="modal-content">
+            <h2>✅ Denuncia Registrada</h2>
+            <p>La denuncia ha sido registrada exitosamente.</p>
+            <p style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <strong>⚠️ IMPORTANTE:</strong> Esta es una aplicación de demostración.<br><br>
+                Para realizar una denuncia real, acércate a:
+            </p>
+            <ul style="text-align: left; margin: 15px 0; line-height: 2;">
+                <li>Centro de Emergencia Mujer (CEM)</li>
+                <li>Comisaría más cercana</li>
+                <li>Fiscalía de Familia</li>
+                <li>Llama a la Línea 100</li>
+            </ul>
+            <button class="btn btn-primary" onclick="cerrarModalConfirmacion()">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        let denuncias = [];
+        let tabActual = 0;
+
+        function cambiarTab(index) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((tab, i) => {
+                if (i === index) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            contents.forEach((content, i) => {
+                if (i === index) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+            
+            tabActual = index;
+            
+            if (index === 3) {
+                actualizarListaDenuncias();
+            }
+        }
+
+        function mostrarEmergencia() {
+            document.getElementById('modalEmergencia').classList.add('active');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalEmergencia').classList.remove('active');
+        }
+
+        function cerrarModalConfirmacion() {
+            document.getElementById('modalConfirmacion').classList.remove('active');
+        }
+
+        function validarFormulario() {
+            const campos = {
+                'nombres': 'Nombres',
+                'apellidos': 'Apellidos',
+                'dni': 'DNI',
+                'fechaNac': 'Fecha de Nacimiento',
+                'sexo': 'Sexo',
+                'direccion': 'Dirección',
+                'telefono': 'Teléfono',
+                'nombresAgresor': 'Nombres del Agresor',
+                'apellidosAgresor': 'Apellidos del Agresor',
+                'relacion': 'Relación con el Agresor',
+                'fechaIncidente': 'Fecha del Incidente',
+                'tipoViolencia': 'Tipo de Violencia',
+                'lugarIncidente': 'Lugar del Incidente',
+                'descripcion': 'Descripción de los Hechos'
+            };
+
+            for (let [id, nombre] of Object.entries(campos)) {
+                const valor = document.getElementById(id).value.trim();
+                if (!valor) {
+                    alert(`Por favor complete el campo: ${nombre}`);
+                    return false;
+                }
+            }
+
+            const dni = document.getElementById('dni').value;
+            if (dni.length !== 8 || isNaN(dni)) {
+                alert('El DNI debe tener 8 dígitos numéricos');
+                return false;
+            }
+
+            return true;
+        }
+
+        function guardarDenuncia() {
+            if (!validarFormulario()) {
+                return;
+            }
+
+            const denuncia = {
+                fechaRegistro: new Date(),
+                nombres: document.getElementById('nombres').value,
+                apellidos: document.getElementById('apellidos').value,
+                dni: document.getElementById('dni').value,
+                fechaNac: document.getElementById('fechaNac').value,
+                sexo: document.getElementById('sexo').value,
+                direccion: document.getElementById('direccion').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value,
+                nombresAgresor: document.getElementById('nombresAgresor').value,
+                apellidosAgresor: document.getElementById('apellidosAgresor').value,
+                dniAgresor: document.getElementById('dniAgresor').value,
+                relacion: document.getElementById('relacion').value,
+                direccionAgresor: document.getElementById('direccionAgresor').value,
+                fechaIncidente: document.getElementById('fechaIncidente').value,
+                tipoViolencia: document.getElementById('tipoViolencia').value,
+                lugarIncidente: document.getElementById('lugarIncidente').value,
+                descripcion: document.getElementById('descripcion').value,
+                testigos: document.getElementById('testigos').checked,
+                pruebas: document.getElementById('pruebas').checked,
+                atencionMedica: document.getElementById('atencionMedica').checked,
+                denunciaPrevia: document.getElementById('denunciaPrevia').checked
+            };
+
+            denuncias.push(denuncia);
+            document.getElementById('modalConfirmacion').classList.add('active');
+            limpiarFormulario();
+            cambiarTab(3);
+        }
+
+        function limpiarFormulario() {
+            if (confirm('¿Está seguro que desea limpiar el formulario?')) {
+                document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select').forEach(el => {
+                    el.value = '';
+                });
+                document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+                    el.checked = false;
+                });
+                cambiarTab(0);
+            }
+        }
+
+        function actualizarListaDenuncias() {
+            const lista = document.getElementById('listaDenuncias');
+            
+            if (denuncias.length === 0) {
+                lista.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        <h3>No hay denuncias registradas</h3>
+                        <p>Complete el formulario para registrar una denuncia</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            denuncias.forEach((d, index) => {
+                const fecha = new Date(d.fechaRegistro);
+                html += `
+                    <div class="denuncia-card">
+                        <h3>Denuncia #${index + 1} - ${fecha.toLocaleDateString('es-PE')} ${fecha.toLocaleTimeString('es-PE')}</h3>
+                        <div class="denuncia-info">
+                            <div><strong>Denunciante:</strong> ${d.nombres} ${d.apellidos}</div>
+                            <div><strong>DNI:</strong> ${d.dni}</div>
+                            <div><strong>Agresor:</strong> ${d.nombresAgresor} ${d.apellidosAgresor}</div>
+                            <div><strong>Relación:</strong> ${d.relacion}</div>
+                            <div><strong>Tipo de Violencia:</strong> ${d.tipoViolencia}</div>
+                            <div><strong>Fecha del Incidente:</strong> ${new Date(d.fechaIncidente).toLocaleDateString('es-PE')}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            lista.innerHTML = html;
+        }
+
+        // Configurar fecha máxima para fechas de nacimiento e incidentes
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fechaNac').setAttribute('max', hoy);
+            document.getElementById('fechaIncidente').setAttribute('max', hoy);
+        });
+    </script>
+</body>
+</html>
